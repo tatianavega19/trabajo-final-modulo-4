@@ -1,0 +1,26 @@
+{
+  "name": "trabajo-final-modulo-4",
+  "version": "1.0.0",
+  "description": "API on anime and manga characters and their different searches",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node ./src/index.ts",
+    "dev": "ts-node ./src/model/animeModel.ts",
+    "build": "tsc"
+  },
+  "keywords": [
+    "Anime",
+    "Character",
+    "API",
+    "Search"
+  ],
+  "author": "TatianaAylenVega",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.1"
+  }
+}
