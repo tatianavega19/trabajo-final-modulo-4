@@ -106,11 +106,22 @@ const getUrlImages = async (id: number, type: "jpg" | "webp") => {
     };
 };
 
-const main = async () => {
-    const data = await getUrlImages(80, "jpg");
-    console.log(data)
+const getOrderList = async () => {
+    try {
+        const data = await getAllData();
+
+        if (data instanceof Error) {
+            throw data;
+        };
+
+        const orderedList = data.sort((a, b) => a.mal_id - b.mal_id);
+
+        const simplifiedList = orderedList.map(character => ({ id: character.mal_id, name: character.name }));
+
+        return simplifiedList;
+    } catch (error) {
+        return error;
+    };
 };
 
-main()
-
-export { getAllData, getUrlById, getNickNamesById }
+export { getAllData, getUrlById, getNickNamesById, getUrlImages, getOrderList }
