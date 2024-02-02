@@ -73,11 +73,44 @@ const getNickNamesById = async (id: number) => {
     };
 };
 
+const getUrlImages = async (id: number, type: "jpg" | "webp") => {
+    try {
+        const data = await getAllData();
+
+        if (data instanceof Error) {
+            throw data
+        };
+
+        const character = data.find((character) => character.mal_id === id);
+
+        if (!character) {
+            throw new Error(`Character with ID ${id} not found`);
+        };
+
+        let imageUrl;
+        if (type === "jpg") {
+            imageUrl = character.images.jpg.image_url;
+        } else if (type === "webp") {
+            imageUrl = character.images.webp.image_url;
+        } else {
+            throw new Error(`Invalid image type: ${type}`);
+        }
+
+        if (!imageUrl) {
+            throw new Error(`Image with ${type} format not found for the character with ID ${id}`);
+        };
+
+        return (`The url of the image of the requested character is the following: "${imageUrl}" `)
+    } catch (error) {
+        return error
+    };
+};
+
 const main = async () => {
-    const data = await getNickNamesById(80);
+    const data = await getUrlImages(80, "jpg");
     console.log(data)
 };
 
 main()
 
-export { getAllData, getUrlById }
+export { getAllData, getUrlById, getNickNamesById }

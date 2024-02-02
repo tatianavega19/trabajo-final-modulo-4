@@ -14,6 +14,6 @@ interface AnimeCharacter {
     nicknames: string[];
     favorites: number;
     about: string;
-}
+};
 
-export {AnimeCharacter}
+export { AnimeCharacter }
