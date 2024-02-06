@@ -8,9 +8,10 @@ const api = new URL(urlApi);
 const getAllData = async (): Promise<AnimeCharacter[] | Error> => {
     try {
         const response = await fetch(api);
-        if (response.status === 404) {
-            throw new Error("Resource not found");
+        if (!response.ok) {
+            throw new Error("Failed to fetch data.");
         }
+
         const responseData = await response.json();
         const usefulinformation = responseData.data;
 
@@ -20,12 +21,12 @@ const getAllData = async (): Promise<AnimeCharacter[] | Error> => {
     };
 };
 
-const getUrlById = async (id: number) => {
+const getUrlById = async (id: number): Promise<string | Error> => {
     try {
         const data = await getAllData()
 
         if (data instanceof Error) {
-            throw data
+            throw new Error("Error fetching data");
         }
 
         const character = data.find((character) => character.mal_id === id);
@@ -41,20 +42,20 @@ const getUrlById = async (id: number) => {
 
         const animeString =
             `  Character's name: ${characterInfo.anime}, 
-    URL: ${characterInfo.url}`;
+  URL: ${characterInfo.url}`;
 
         return animeString;
-    } catch (error) {
+    } catch (error: any) {
         return error
     }
 };
 
-const getNickNamesById = async (id: number) => {
+const getNickNamesById = async (id: number): Promise<string | Error> => {
     try {
         const data = await getAllData();
 
         if (data instanceof Error) {
-            throw data
+            throw new Error("Error fetching data");
         };
 
         const character = data.find((character) => character.mal_id === id);
@@ -68,17 +69,17 @@ const getNickNamesById = async (id: number) => {
         const nicknamesString = nicknames.join(', ');
 
         return (`The nicknames of the character "${character.name}" are: ${nicknamesString}`);
-    } catch (error) {
+    } catch (error: any) {
         return error
     };
 };
 
-const getUrlImages = async (id: number, type: "jpg" | "webp") => {
+const getUrlImages = async (id: number, type: "jpg" | "webp"): Promise<string | Error> => {
     try {
         const data = await getAllData();
 
         if (data instanceof Error) {
-            throw data
+            throw new Error("Error fetching data");
         };
 
         const character = data.find((character) => character.mal_id === id);
@@ -100,18 +101,18 @@ const getUrlImages = async (id: number, type: "jpg" | "webp") => {
             throw new Error(`Image with ${type} format not found for the character with ID ${id}`);
         };
 
-        return (`The url of the image of the requested character is the following: "${imageUrl}" `)
-    } catch (error) {
+        return (`The url of the image of the requested character is the following: "${imageUrl}" `);
+    } catch (error: any) {
         return error
     };
 };
 
-const getOrderList = async () => {
+const getOrderList = async (): Promise<Array<{ id: number; name: string }> | Error> => {
     try {
         const data = await getAllData();
 
         if (data instanceof Error) {
-            throw data;
+            throw new Error("Error fetching data");
         };
 
         const orderedList = data.sort((a, b) => a.mal_id - b.mal_id);
@@ -119,9 +120,15 @@ const getOrderList = async () => {
         const simplifiedList = orderedList.map(character => ({ id: character.mal_id, name: character.name }));
 
         return simplifiedList;
-    } catch (error) {
+    } catch (error: any) {
         return error;
     };
 };
 
-export { getAllData, getUrlById, getNickNamesById, getUrlImages, getOrderList }
+export {
+    getAllData,
+    getUrlById,
+    getNickNamesById,
+    getUrlImages,
+    getOrderList
+};
