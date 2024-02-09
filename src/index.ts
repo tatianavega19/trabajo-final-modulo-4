@@ -35,7 +35,7 @@ const main = async () => {
                 console.log(orderedListResult);
                 break;
             default:
-                console.error('Unrecognized method');
+                console.log('Unrecognized method');
                 break;
         };
     } catch (error) {
